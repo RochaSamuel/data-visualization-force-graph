@@ -3,9 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { ForceGraph3D, ForceGraph2D } from "react-force-graph";
 import Search from "./components/Search";
 import AssuntoFilter from "./components/AssuntoFilter";
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import { FixedSizeList } from 'react-window';
 
 function Force() {
     const graphRef = useRef(null);
@@ -110,8 +107,9 @@ function Force() {
                 nodeLabel={"id"}
                 linkLabel={(link) => `${link.protocolo}`}
                 nodeAutoColorBy={"assunto"}
-                linkDirectionalArrowLength={3}
                 onNodeClick={ handleNodeClick }
+                linkDirectionalParticles={1}
+                linkDirectionalParticleWidth={2}
             />
             {openFilteredResults && renderFilteredResults(filteredTemp)}
             <AssuntoFilter assuntos={[...new Set(secureNodes.map(node => node.assunto))]} applyFilter={handleAssuntoFilter}/>
