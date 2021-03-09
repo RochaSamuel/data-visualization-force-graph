@@ -18,19 +18,20 @@ function Force() {
     const [assuntoFilter, setAssuntoFilter] = useState([]);
 
     const [openFilteredResults, setOpenFilteredResults] = useState(false);
-
+    // https://raw.githubusercontent.com/RochaSamuel/data-visualization-force-graph/master/linksv2.json
+    // https://raw.githubusercontent.com/RochaSamuel/data-visualization-force-graph/master/nodesv2.json
     useEffect(() => {
         fetch(
-        "https://raw.githubusercontent.com/RochaSamuel/data-visualization-force-graph/master/linksv2.json"
+        "linksv2.json"
         )
         .then((data) => data.json())
         .then((json) => {
             setLinks(json)
             setSecureLinks(json)
-        });
+        }, []);
 
         fetch(
-        "https://raw.githubusercontent.com/RochaSamuel/data-visualization-force-graph/master/nodesv2.json"
+        "nodesv2.json"
         )
         .then((data) => data.json())
         .then((json) => {
