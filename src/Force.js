@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ForceGraph3D, ForceGraph2D } from "react-force-graph";
 import Search from "./components/Search";
 import AssuntoFilter from "./components/AssuntoFilter";
+import DictAssuntoFilter from "./components/DictAssuntoFilter";
 
 function Force() {
     const graphRef = useRef(null);
@@ -16,6 +17,7 @@ function Force() {
 
     const [dataShouldBeUpdated, setDataShouldBeUpdated] = useState(false);
     const [assuntoFilter, setAssuntoFilter] = useState([]);
+    const [dictAssuntoFilter, setDictAssuntoFilter] = useState([]);
 
     const [openFilteredResults, setOpenFilteredResults] = useState(false);
     // https://raw.githubusercontent.com/RochaSamuel/data-visualization-force-graph/master/linksv2.json
@@ -43,12 +45,18 @@ function Force() {
     useEffect(() => {
         let filteredNodes
         let filteredLinks
+
         if(assuntoFilter.length > 0) {
             filteredNodes = secureNodes.filter(node => assuntoFilter.includes(node.assunto));
             filteredLinks = secureLinks.filter(link => [...filteredNodes.map(node => node.id)].includes(link.source.id) && [...filteredNodes.map(node => node.id)].includes(link.target.id))
         } else {
             filteredLinks = secureLinks;
             filteredNodes = secureNodes;
+        }
+
+        if(dictAssuntoFilter.length > 0) {
+            filteredNodes = filteredNodes.filter(node => [...new Set([].concat.apply([], [...node.dictionary.map(column => column.assunto)]))].some(n => dictAssuntoFilter.includes(n)) )
+            filteredLinks = filteredLinks.filter(link => [...filteredNodes.map(node => node.id)].includes(link.source.id) && [...filteredNodes.map(node => node.id)].includes(link.target.id))
         }
         // setNodes(filteredNodes);
         // setLinks(filteredLinks);
@@ -62,27 +70,40 @@ function Force() {
         setDataShouldBeUpdated(true);
     }
 
+    const handleDictAssuntoFilter = (value) => {
+        setDictAssuntoFilter(value)
+        setDataShouldBeUpdated(true);
+    }
+
 
     const renderFilteredResults = ({nodes, links}) => {
         const styles = {
             container: {overflow: 'auto',borderRadius: '10px', background: '#F2F2F2', width: '300px', padding: '15px', height: '400px', position: 'absolute', zIndex: '1', top: '260px', left: '20px'},
-            button: {cursor: 'pointer', background: 'red', color: '#fff', padding: '10px', width: 'fit-content', dsplay: 'flex', alignItems: 'center', justifyContent: 'center', fontWeigth: 'bold', borderRadius: '10px', margin: '20px auto'}
         }
 
         return (<>
             <div style={styles.container}>
                 {nodes.map(node => <div onClick={() => handleNodeClick(node)} style={{cursor: 'pointer', marginBottom: '6px'}}>{node.id}</div>)}
-                <div style={styles.button} onClick={() => {
-                    setNodes(nodes);
-                    setLinks(links);
-                }}>APLICAR FILTROS</div>
-                <div style={styles.button} onClick={() => {
-                    setNodes(secureNodes);
-                    setLinks(secureLinks);
-                }}>REVERTER</div>
             </div>
             </>
         );
+    }
+
+    function renderFilterButtons({nodes, links}) {
+        const styles = {
+            container: {position: 'absolute', width: 'fit-content', left: '29px', bottom: '-12px'},
+            button: {cursor: 'pointer', background: 'red', color: '#fff', padding: '10px', width: 'fit-content', dsplay: 'flex', alignItems: 'center', justifyContent: 'center', fontWeigth: 'bold', borderRadius: '10px', margin: '20px auto'}
+        }
+        return <div style={styles.container}>
+            <div style={styles.button} onClick={() => {
+                setNodes(nodes);
+                setLinks(links);
+            }}>APLICAR FILTROS</div>
+            <div style={styles.button} onClick={() => {
+                setNodes(secureNodes);
+                setLinks(secureLinks);
+            }}>REVERTER</div>
+        </div>
     }
     
     const handleNodeClick = (node) => {
@@ -113,7 +134,9 @@ function Force() {
                 linkDirectionalParticleWidth={2}
             />
             {openFilteredResults && renderFilteredResults(filteredTemp)}
+            {openFilteredResults && renderFilterButtons(filteredTemp)}
             <AssuntoFilter assuntos={[...new Set(secureNodes.map(node => node.assunto))]} applyFilter={handleAssuntoFilter}/>
+            <DictAssuntoFilter assuntos={['dado pessoal', 'transferencia', 'seguranca', 'dados']} applyFilter={handleDictAssuntoFilter}/>
             {graphRef.current && <Search nodes={nodes} graphRef={graphRef}/>}
         </div>
     );
