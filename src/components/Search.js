@@ -7,7 +7,6 @@ const styles = {
 }
 
 export default function Seacrh(props) {
-    console.log(props.nodes)
     return <div style={styles.container}>
         <Autocomplete
             id="combo-box-demo"

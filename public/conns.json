@@ -1,0 +1,266 @@
+[
+  {
+    "source": "tb_crivo1",
+    "target": "tb_dw_cred3",
+    "protocolo": "JDBC",
+    "frequencia_H": 0
+  },
+  {
+    "source": "tb_crivo2",
+    "target": "tb_dw_cred2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 1
+  },
+  {
+    "source": "tb_dw_cred2",
+    "target": "tb_dep_cred2",
+    "protocolo": "PROT2",
+    "frequencia_H": 2
+  },
+  {
+    "source": "tb_dep_cred3",
+    "target": "tb_dep_cred2",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_crivo3",
+    "target": "tb_aws_cred2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_crivo3",
+    "target": "tb_dw_cred1",
+    "protocolo": "PROT2",
+    "frequencia_H": 168
+  },
+  {
+    "source": "tb_crivo2",
+    "target": "tb_dw_cred1",
+    "protocolo": "JDBC",
+    "frequencia_H": 0
+  },
+  {
+    "source": "tb_aws_vec2",
+    "target": "ds_veic1",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 1
+  },
+  {
+    "source": "tb_aws_vec1",
+    "target": "ds_veic1",
+    "protocolo": "PROT2",
+    "frequencia_H": 2
+  },
+  {
+    "source": "tb_aws_vec1",
+    "target": "ds_estrat1",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_aws_emp_pes2",
+    "target": "ds_estrat1",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_aws_emp_pes1",
+    "target": "ds_estrat1",
+    "protocolo": "PROT2",
+    "frequencia_H": 168
+  },
+  {
+    "source": "tb_dw_emp_pes1",
+    "target": "ds_estrat2",
+    "protocolo": "JDBC",
+    "frequencia_H": 0
+  },
+  {
+    "source": "tb_dw_emp_pes2",
+    "target": "ds_estrat2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 1
+  },
+  {
+    "source": "tb_dw_vec1",
+    "target": "ds_estrat2",
+    "protocolo": "PROT2",
+    "frequencia_H": 2
+  },
+  {
+    "source": "tb_aws_vec1",
+    "target": "ds_steering",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_aws_vec2",
+    "target": "ds_steering",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_aws_cred2",
+    "target": "ds_steering",
+    "protocolo": "PROT2",
+    "frequencia_H": 168
+  },
+  {
+    "source": "tb_aws_cred1",
+    "target": "ds_steering",
+    "protocolo": "JDBC",
+    "frequencia_H": 0
+  },
+  {
+    "source": "tb_aws_cred2",
+    "target": "ds_steering",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 1
+  },
+  {
+    "source": "tb_aws_emp_pes2",
+    "target": "ds_steering",
+    "protocolo": "PROT2",
+    "frequencia_H": 2
+  },
+  {
+    "source": "tb_dep_cred2",
+    "target": "ds_cred",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_dep_cred4",
+    "target": "ds_cred",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_dw_cred3",
+    "target": "ds_cred",
+    "protocolo": "PROT2",
+    "frequencia_H": 168
+  },
+  {
+    "source": "tb_npv1",
+    "target": "tb_dw_vec2",
+    "protocolo": "JDBC",
+    "frequencia_H": 0
+  },
+  {
+    "source": "tb_npv2",
+    "target": "tb_dw_vec2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 1
+  },
+  {
+    "source": "tb_npv3",
+    "target": "tb_dw_vec2",
+    "protocolo": "PROT2",
+    "frequencia_H": 2
+  },
+  {
+    "source": "tb_crivo1",
+    "target": "tb_dep_emp_pes3",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_crivo2",
+    "target": "tb_dep_emp_pes3",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_npv2",
+    "target": "tb_aws_vec1",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_crivo2",
+    "target": "tb_aws_emp_pes2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_crivo2",
+    "target": "tb_aws_emp_pes1",
+    "protocolo": "PROT2",
+    "frequencia_H": 168
+  },
+  {
+    "source": "tb_npv3",
+    "target": "tb_dw_emp_pes1",
+    "protocolo": "JDBC",
+    "frequencia_H": 0
+  },
+  {
+    "source": "tb_npv1",
+    "target": "tb_dw_emp_pes2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 1
+  },
+  {
+    "source": "tb_dw_vec3",
+    "target": "tb_dw_vec1",
+    "protocolo": "PROT2",
+    "frequencia_H": 2
+  },
+  {
+    "source": "tb_dw_vec1",
+    "target": "tb_aws_vec1",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_dw_vec3",
+    "target": "tb_aws_vec2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_dep_cred2",
+    "target": "tb_aws_cred2",
+    "protocolo": "PROT2",
+    "frequencia_H": 168
+  },
+  {
+    "source": "tb_crivo3",
+    "target": "tb_aws_cred1",
+    "protocolo": "JDBC",
+    "frequencia_H": 0
+  },
+  {
+    "source": "tb_dw_cred3",
+    "target": "tb_aws_cred2",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 1
+  },
+  {
+    "source": "tb_dw_cred2",
+    "target": "tb_aws_emp_pes2",
+    "protocolo": "PROT2",
+    "frequencia_H": 2
+  },
+  {
+    "source": "tb_dw_cred2",
+    "target": "tb_dep_cred2",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  },
+  {
+    "source": "tb_dw_cred2",
+    "target": "tb_dep_cred4",
+    "protocolo": "ServerAlgo",
+    "frequencia_H": 24
+  },
+  {
+    "source": "tb_crivo3",
+    "target": "tb_dw_cred3",
+    "protocolo": "JDBC",
+    "frequencia_H": 12
+  }
+]

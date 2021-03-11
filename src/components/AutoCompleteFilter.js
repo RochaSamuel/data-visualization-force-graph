@@ -2,25 +2,21 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
-const styles = {
-    container: {borderRadius: '10px', background: '#F2F2F2', width: 'max-content', padding: '15px', height: 'fit-content', position: 'absolute', zIndex: '1', top: '130px', left: '20px'},
-}
-
-export default function AssuntoFilter({assuntos, applyFilter}) {
-    return <div style={styles.container}>
+export default function AutoCompleteFilters({data, applyFilter, label, placeholder}) {
+    return <div style={{marginBottom: '20px'}}>
         <Autocomplete
             multiple
             size='small'
             limitTags={2}
             id="multiple-limit-tags"
-            options={assuntos}
+            options={data}
             style={{ width: 300 }}
             getOptionLabel={(option) => option}
             onChange={(event, selectedValues) => {
                 applyFilter(selectedValues)
             }}
             renderInput={(params) => (
-                <TextField {...params} variant="outlined" label="Slecione os assuntos" placeholder="assuntos" />
+                <TextField {...params} variant="outlined" label={label} placeholder={placeholder} />
             )}
         />
     </div>
