@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+
+.filteredResultsContainer{
+    overflow: auto;
+    border-radius: 10px;
+    background: #F2F2F2;
+    width: 330px;
+    padding: 0;
+    height: 348px;
+    position: absolute;
+    z-index: 1;
+    bottom: 20px;
+    right: 20px
+}
+
+.filteredResultsNav{
+    width: 300px;
+    display: flex;
+    padding:15px;
+    align-items: center;
+    justify-content: space-between;
+    background: #F2F2F2;
+    position: fixed;
+    border-radius: 10px 10px 0 0;
+    height: 11px;
+    box-shadow: rgb(0 0 0 / 20%) 2px 1px 10px 1px;
+}
+
+.filteredResultsNodeId{
+    font-family: Open Sans;
+    font-weight: 500;
+}
+
+.nodeInfoContainer{
+    overflow: auto;
+    border-radius: 10px;
+    background: #F2F2F2;
+    width: 300px;
+    padding: 15px;
+    height: fit-content;
+    max-height: 400px;
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    right: 20px
+}
+
+.nodeInfoProp, .nodeInfoTitle{
+    font-family: Open Sans;
+    font-size: 14px;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.nodeInfoTitle{
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.nodeInfoDicioLink{
+    font-family: Open Sans;
+    color: green;
+    text-decoration: underline;
+    cursor: pointer;
+}
