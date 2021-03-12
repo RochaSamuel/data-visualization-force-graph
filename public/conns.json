@@ -114,12 +114,6 @@
     "frequencia_H": 0
   },
   {
-    "source": "tb_aws_cred2",
-    "target": "ds_steering",
-    "protocolo": "ServerAlgo",
-    "frequencia_H": 1
-  },
-  {
     "source": "tb_aws_emp_pes2",
     "target": "ds_steering",
     "protocolo": "PROT2",

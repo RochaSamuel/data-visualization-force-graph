@@ -1,8 +1,9 @@
-import "./App.css";
+import "./styles/global.css";
 import React, { useEffect, useRef, useState } from "react";
 import { ForceGraph3D, ForceGraph2D } from "react-force-graph";
 import Search from "./components/Search";
 import AutoCompleteFilter from "./components/AutoCompleteFilter";
+import Dictionary from './components/Dictionary';
 
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import CheckIcon from '@material-ui/icons/Check';
@@ -17,6 +18,11 @@ function Force() {
     const [secureNodes, setSecureNodes] = useState([])
 
     const [filteredTemp, setFilteredTemp] = useState([])
+    const [clickedNode, setClickedNode] = useState({})
+
+    const [openNodeInfo, setOpenNodeInfo] = useState(false)
+    const [openFilteredResults, setOpenFilteredResults] = useState(false);
+    const [openDictDialog, setOpenDictDialog] = useState(false);
 
     const [dataShouldBeUpdated, setDataShouldBeUpdated] = useState(false);
     const [assuntoFilter, setAssuntoFilter] = useState([]);
@@ -24,7 +30,6 @@ function Force() {
     const [plataformaFilter, setPlataformaFilter] = useState([]);
     const [conjuntoFilter, setConjuntoFilter] = useState([]);
 
-    const [openFilteredResults, setOpenFilteredResults] = useState(false);
     useEffect(() => {
         fetch(
         "conns.json"
@@ -82,14 +87,10 @@ function Force() {
 
 
     const renderFilteredResults = ({nodes, links}) => {
-        const styles = {
-            container: {overflow: 'auto',borderRadius: '10px', background: '#F2F2F2', width: '300px', padding: '0', height: '348px', position: 'absolute', zIndex: '1', bottom: '20px', right: '20px'},
-            nav: {width: '270px', display: 'flex', padding:'15px', alignItems: 'center', justifyContent: 'space-between', background: '#F2F2F2', position: 'fixed', borderRadius: '10px', height: '11px', boxShadow: 'rgb(0 0 0 / 20%) 2px 1px 10px 1px'}
-        }
 
         return (<>
-            <div style={styles.container}>
-                <div style={styles.nav}>
+            <div className='filteredResultsContainer'>
+                <div className='filteredResultsNav'>
                     <CloseIcon style={{cursor: 'pointer'}} onClick={() => setOpenFilteredResults(false)}/>
                     <CheckIcon style={{cursor: 'pointer'}} onClick={() => {
                         setNodes(nodes);
@@ -101,11 +102,24 @@ function Force() {
                     }}/>
                 </div>
                 <div style={{marginTop: '40px'}}>
-                    {nodes.map(node => <div onClick={() => handleNodeClick(node)} style={{cursor: 'pointer', marginBottom: '6px'}}>{node.id}</div>)}
+                    {nodes.map(node => <div className='filteredResultsNodeId' onClick={() => handleNodeClick(node)} style={{cursor: 'pointer', marginBottom: '6px'}}>{node.id}</div>)}
                 </div>
             </div>
         </>
         );
+    }
+
+    const renderNodeInfo = (node) => {
+        return <div className='nodeInfoContainer'>
+            <CloseIcon style={{cursor: 'pointer'}} onClick={() => setOpenNodeInfo(false)}/>
+            <div className='nodeInfoTitle'><b>Informações da Base: </b>{node.id}</div>
+            <div className='nodeInfoProp'><b>Plataforma: </b>{node.PLATAFORMA}</div>
+            <div className='nodeInfoProp'><b>Caminho: </b>{node.CAMINHO}</div>
+            <div className='nodeInfoProp'><b>Conjunto: </b>{node.CONJUNTO}</div>
+            <div className='nodeInfoProp'><b>Assunto: </b>{node.ASSUNTO}</div>
+            <div className='nodeInfoProp'><b>Dscrição: </b>{node.DESCR}</div>
+            <div className='nodeInfoProp'><b>Dicionário: </b><div onClick={() => setOpenDictDialog(true)} className='nodeInfoDicioLink'>Visualizar Dicionário</div></div>
+        </div>
     }
     
     const handleNodeClick = (node) => {
@@ -121,7 +135,13 @@ function Force() {
             node, // lookAt ({ x, y, z })
             3000
         );
+
+        setClickedNode(node);
+        setOpenNodeInfo(true);
     }
+
+    console.log(openDictDialog);
+
 
     const styles = {
         container: {borderRadius: '10px', background: '#F2F2F2', width: 'fit-content', padding: '15px 15px 0 15px', height: 'fit-content', maxHeight: '80vh', position: 'absolute', zIndex: '1', top: '130px', left: '20px'},
@@ -140,6 +160,8 @@ function Force() {
                 linkDirectionalParticleWidth={2}
             />
             {openFilteredResults && renderFilteredResults(filteredTemp)}
+            {openNodeInfo && renderNodeInfo(clickedNode)}
+            <Dictionary open={openDictDialog} close={() => setOpenDictDialog(false)} node={clickedNode}/>
             <div style={styles.container}>
                 <AutoCompleteFilter 
                     data={[...new Set([...[].concat.apply([], [...nodes.map(node => node.ASSUNTO)])])]} 
