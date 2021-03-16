@@ -1,10 +1,10 @@
 import './App.css';
-import Force from './Force';
+import Home from './Home';
 
 function App() {
   return (
     <div className="App">
-      <Force graphType={'3D'}/>
+      <Home/>
     </div>
   );
 }

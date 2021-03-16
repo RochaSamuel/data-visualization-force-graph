@@ -1,10 +1,8 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
@@ -56,14 +54,19 @@ function DenseTable(node) {
             <Table size="small" aria-label="a dense table">
             <TableHead>
                 <TableRow>
-                <TableCell><b>ID</b></TableCell>
-                <TableCell align="center"><b>Assunto</b></TableCell>
+                    {Object.keys(node.DICIONARIO[0]).map(key => {
+                        return <TableCell align="center"><b>{key.toUpperCase()}</b></TableCell>
+                    })}
                 </TableRow>
             </TableHead>
             <TableBody>
                 {node.DICIONARIO.map(item => {
                     return <TableRow>
-                        <TableCell>{item.id}</TableCell>
+                        <TableCell align="center"><b>{item.col}</b></TableCell>
+                        <TableCell align="center">{item.dtype}</TableCell>
+                        <TableCell align="center">{item.descr}</TableCell>
+                        <TableCell align="center">{item.null}</TableCell>
+                        <TableCell align="center">{item.LGPD}</TableCell>
                         <TableCell align="center">{item.assunto.map((assunto, index) => item.assunto[index + 1] ? `${assunto}, ` : `${assunto}`)}</TableCell>
                     </TableRow>
                 })}
@@ -78,9 +81,9 @@ export default function Dictionary({close, open, node}) {
 
     return (
         <div>
-            <Dialog onClose={close} aria-labelledby="customized-dialog-title" open={open}>
+            <Dialog maxWidth={'500'} onClose={close} aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={close}>
-                Dicionário de Dados
+                    Dicionário de Dados
                 </DialogTitle>
                 <DialogContent dividers>
                     {DenseTable(node)}

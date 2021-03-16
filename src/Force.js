@@ -9,8 +9,9 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
-function Force() {
+function Force({graphType, close}) {
     const graphRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(true)
     const [nodes, setNodes] = useState([]);
     const [links, setLinks] = useState([]);
 
@@ -47,6 +48,7 @@ function Force() {
         .then((json) => {
             setNodes(json)
             setSecureNodes(json)
+            setIsLoading(false)
         });
     }, []);
 
@@ -83,7 +85,8 @@ function Force() {
 
         setFilteredTemp({nodes: filteredNodes, links: filteredLinks})
         setDataShouldBeUpdated(false);
-    }, [dataShouldBeUpdated])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataShouldBeUpdated, assuntoFilter, conjuntoFilter, plataformaFilter, dictAssuntoFilter])
 
 
     const renderFilteredResults = ({nodes, links}) => {
@@ -101,8 +104,8 @@ function Force() {
                         setLinks(secureLinks);
                     }}/>
                 </div>
-                <div style={{marginTop: '40px'}}>
-                    {nodes.map(node => <div className='filteredResultsNodeId' onClick={() => handleNodeClick(node)} style={{cursor: 'pointer', marginBottom: '6px'}}>{node.id}</div>)}
+                <div style={{marginTop: '45px'}}>
+                    {nodes.map(node => <div className='filteredResultsNodeId' onClick={() => handleNodeClick(node)} style={{cursor: 'pointer', marginBottom: '6px'}}>{node.NOME}</div>)}
                 </div>
             </div>
         </>
@@ -112,56 +115,68 @@ function Force() {
     const renderNodeInfo = (node) => {
         return <div className='nodeInfoContainer'>
             <CloseIcon style={{cursor: 'pointer'}} onClick={() => setOpenNodeInfo(false)}/>
-            <div className='nodeInfoTitle'><b>Informações da Base: </b>{node.id}</div>
+            <div className='nodeInfoTitle'><b>Informações da Base: </b>{node.NOME}</div>
+            <div className='nodeInfoProp'><b>ID: </b>{node.id}</div>
             <div className='nodeInfoProp'><b>Plataforma: </b>{node.PLATAFORMA}</div>
             <div className='nodeInfoProp'><b>Caminho: </b>{node.CAMINHO}</div>
             <div className='nodeInfoProp'><b>Conjunto: </b>{node.CONJUNTO}</div>
-            <div className='nodeInfoProp'><b>Assunto: </b>{node.ASSUNTO}</div>
+            <div className='nodeInfoProp'><b>Assunto: </b>{node.ASSUNTO.map(item => <div>{item}</div>)}</div>
             <div className='nodeInfoProp'><b>Dscrição: </b>{node.DESCR}</div>
             <div className='nodeInfoProp'><b>Dicionário: </b><div onClick={() => setOpenDictDialog(true)} className='nodeInfoDicioLink'>Visualizar Dicionário</div></div>
         </div>
     }
     
     const handleNodeClick = (node) => {
-        const distance = 40;
-        const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+        if(graphType === '3D') {
+            const distance = 40;
+            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+    
+            graphRef.current.cameraPosition(
+                {
+                x: node.x * distRatio,
+                y: node.y * distRatio,
+                z: node.z * distRatio,
+                }, // new position
+                node, // lookAt ({ x, y, z })
+                3000
+            );
+        }
 
-        graphRef.current.cameraPosition(
-            {
-            x: node.x * distRatio,
-            y: node.y * distRatio,
-            z: node.z * distRatio,
-            }, // new position
-            node, // lookAt ({ x, y, z })
-            3000
-        );
+        node.color = '#17fc03'
 
         setClickedNode(node);
         setOpenNodeInfo(true);
     }
 
-    console.log(openDictDialog);
-
-
     const styles = {
-        container: {borderRadius: '10px', background: '#F2F2F2', width: 'fit-content', padding: '15px 15px 0 15px', height: 'fit-content', maxHeight: '80vh', position: 'absolute', zIndex: '1', top: '130px', left: '20px'},
+        container: {borderRadius: '10px', background: '#F2F2F2', width: 'fit-content', padding: '15px 15px 0 15px', height: 'fit-content', maxHeight: '80vh', position: 'absolute', zIndex: '1', top: '158px', left: '10px'},
     }
 
     return (
         <div className="Graph">
-            <ForceGraph3D
-                ref={graphRef}
-                graphData={{ nodes: nodes, links: links }}
-                nodeLabel={"id"}
-                linkLabel={(link) => `${link.protocolo}`}
-                nodeAutoColorBy={"PLATAFORMA"}
-                onNodeClick={ handleNodeClick }
-                linkDirectionalParticles={1}
-                linkDirectionalParticleWidth={2}
-            />
+            {graphType === '3D' ? 
+                <>{!isLoading && <ForceGraph3D
+                    ref={graphRef}
+                    graphData={{ nodes: nodes, links: links }}
+                    nodeLabel={"id"}
+                    linkLabel={(link) => `${link.protocolo}`}
+                    nodeAutoColorBy={"PLATAFORMA"}
+                    onNodeClick={ handleNodeClick }
+                    linkDirectionalParticles={1}
+                    linkDirectionalParticleWidth={2}
+                />}</> :
+                <>{!isLoading && <ForceGraph2D
+                    ref={graphRef}
+                    graphData={{ nodes: nodes, links: links }}
+                    nodeLabel={"id"}
+                    linkLabel={(link) => `${link.protocolo}`}
+                    nodeAutoColorBy={"PLATAFORMA"}
+                    onNodeClick={ handleNodeClick }
+                />}</>
+            }
             {openFilteredResults && renderFilteredResults(filteredTemp)}
             {openNodeInfo && renderNodeInfo(clickedNode)}
-            <Dictionary open={openDictDialog} close={() => setOpenDictDialog(false)} node={clickedNode}/>
+            {openDictDialog && <Dictionary open={openDictDialog} close={() => setOpenDictDialog(false)} node={clickedNode}/>}
             <div style={styles.container}>
                 <AutoCompleteFilter 
                     data={[...new Set([...[].concat.apply([], [...nodes.map(node => node.ASSUNTO)])])]} 
@@ -200,7 +215,8 @@ function Force() {
                     placeholder={'conjunto'}
                 />
             </div>
-            {graphRef.current && <Search nodes={nodes} graphRef={graphRef}/>}
+            <div className="backButton" onClick={close}>Voltar</div>
+            {!isLoading && <Search nodes={nodes} graphRef={graphRef} handleNodeClick={handleNodeClick}/>}
         </div>
     );
 }
